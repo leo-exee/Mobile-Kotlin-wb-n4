@@ -6,24 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".SecondActivity">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_return"
-        android:text="Return"
-        tools:ignore="MissingConstraints" />
-
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@id/button_return"
-        tools:layout_editor_absoluteX="80dp">
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_return" />
-    </ScrollView>
+        android:id="@+id/recyclerView"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.8.8")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     val room = "2.6.1"
     implementation("androidx.room:room-runtime:$room")
