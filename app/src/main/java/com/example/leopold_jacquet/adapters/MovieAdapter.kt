@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leopold_jacquet.R
 import com.example.leopold_jacquet.entities.Movie
+import com.squareup.picasso.Picasso
 
 class MovieAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -25,7 +26,6 @@ class MovieAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MovieA
         return movies.size
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (movies[position].title.isEmpty()) {
             holder.title.text = "Title not available for this movie :("
@@ -37,5 +37,7 @@ class MovieAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MovieA
         } else {
             holder.production_year.text = "Production year: " + movies[position].production_year.toString()
         }
+
+        Picasso.get().load(movies[position].poster).into(holder.poster)
     }
 }

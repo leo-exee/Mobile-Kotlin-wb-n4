@@ -1,7 +1,20 @@
 package com.example.leopold_jacquet
 
+import android.Manifest
+import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.registerForActivityResult
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.leopold_jacquet.adapters.MovieAdapter
 import com.example.leopold_jacquet.entities.Movies
@@ -14,6 +27,8 @@ import okhttp3.Request
 import okhttp3.Response
 
 class SecondActivity : AppCompatActivity() {
+    private val CHANNEL_ID = "channel_id"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
@@ -21,6 +36,13 @@ class SecondActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        createNotificationChannel()
+        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Movies")
+            .setContentText("Here are the movies")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+
         requestMovieList { result ->
             runOnUiThread {
                 findViewById<RecyclerView>(R.id.recyclerView).apply {
@@ -29,6 +51,20 @@ class SecondActivity : AppCompatActivity() {
                 }
             }
             return@requestMovieList result
+        }
+        with(NotificationManagerCompat.from(this)) {
+            if (ActivityCompat.checkSelfPermission(
+                    this@SecondActivity,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this@SecondActivity,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1
+                )
+            }
+            notify(1, builder.build())
         }
     }
 
@@ -52,5 +88,17 @@ class SecondActivity : AppCompatActivity() {
         var movies = gson.fromJson(response.body!!.string(), Movies::class.java)
 
         callback(movies)
+    }
+
+    private fun createNotificationChannel() {
+        val name = "Movies"
+        val descriptionText = "Here are the movies"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+            description = descriptionText
+        }
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 }
