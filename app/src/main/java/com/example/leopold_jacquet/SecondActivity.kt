@@ -1,26 +1,23 @@
 package com.example.leopold_jacquet
 
 import android.Manifest
-import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.registerForActivityResult
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.leopold_jacquet.adapters.MovieAdapter
 import com.example.leopold_jacquet.entities.Movies
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -28,15 +25,20 @@ import okhttp3.Response
 
 class SecondActivity : AppCompatActivity() {
     private val CHANNEL_ID = "channel_id"
+    private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel()
         setContentView(R.layout.activity_second)
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "movies.db"
+        ).build()
     }
 
     override fun onStart() {
         super.onStart()
-        createNotificationChannel()
         var builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Movies")
@@ -44,12 +46,6 @@ class SecondActivity : AppCompatActivity() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
 
         requestMovieList { result ->
-            runOnUiThread {
-                findViewById<RecyclerView>(R.id.recyclerView).apply {
-                    adapter = MovieAdapter(result.movies)
-                    layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@SecondActivity)
-                }
-            }
             return@requestMovieList result
         }
         with(NotificationManagerCompat.from(this)) {
@@ -85,8 +81,9 @@ class SecondActivity : AppCompatActivity() {
         }
 
         val gson = Gson()
-        var movies = gson.fromJson(response.body!!.string(), Movies::class.java)
-
+        val movies = gson.fromJson(response.body!!.string(), Movies::class.java)
+        db.movieDao().insertAll(*movies.movies.toTypedArray())
+        updateFromDatabase()
         callback(movies)
     }
 
@@ -100,5 +97,18 @@ class SecondActivity : AppCompatActivity() {
         val notificationManager: NotificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+    fun updateFromDatabase() = CoroutineScope(Dispatchers.IO).launch {
+        val flow = db.movieDao().getFlow()
+        flow.collect() {
+            CoroutineScope(Dispatchers.Main).launch {
+                findViewById<RecyclerView>(R.id.recyclerView).apply {
+                    adapter = MovieAdapter(it)
+                    layoutManager =
+                        androidx.recyclerview.widget.LinearLayoutManager(this@SecondActivity)
+                }
+            }
+        }
     }
 }
