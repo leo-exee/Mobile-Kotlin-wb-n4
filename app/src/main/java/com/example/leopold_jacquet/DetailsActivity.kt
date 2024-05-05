@@ -1,7 +1,6 @@
 package com.example.leopold_jacquet
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.example.leopold_jacquet.entities.Movie
@@ -18,7 +17,6 @@ class DetailsActivity: AppCompatActivity() {
             applicationContext,
             AppDatabase::class.java, "movies.db"
         ).fallbackToDestructiveMigration().build()
-        val actionBar = setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -32,6 +30,9 @@ class DetailsActivity: AppCompatActivity() {
 
     private fun displayMovie(movie: Movie) {
         actionBar.apply { title = movie.title }
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment_content_details, DetailsFragment.newInstance(movie.title, movie.production_year.toString(), movie.poster ?: ""))
+            .commit()
     }
 
     private fun requestMovieById(movieId: Int, callback: (Movie) -> Unit) {

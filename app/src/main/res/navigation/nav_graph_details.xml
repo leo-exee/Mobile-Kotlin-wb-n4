@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_details"
+    app:startDestination="@id/DetailsFragment">
+
+    <fragment
+        android:id="@+id/DetailsFragment"
+        android:name="com.example.leopold_jacquet.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <action
+            android:id="@+id/action_DetailsFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+    </fragment>
+
+</navigation>

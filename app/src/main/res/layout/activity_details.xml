@@ -16,4 +16,6 @@
             android:layout_height="?attr/actionBarSize" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <include layout="@layout/content_details" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
