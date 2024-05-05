@@ -17,13 +17,12 @@ import com.example.leopold_jacquet.entities.Movies
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 
-class SecondActivity : AppCompatActivity() {
+class ListActivity : AppCompatActivity() {
     private val CHANNEL_ID = "channel_id"
     private lateinit var db: AppDatabase
 
@@ -34,7 +33,7 @@ class SecondActivity : AppCompatActivity() {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "movies.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
     override fun onStart() {
@@ -44,18 +43,17 @@ class SecondActivity : AppCompatActivity() {
             .setContentTitle("Movies")
             .setContentText("Here are the movies")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-
         requestMovieList { result ->
             return@requestMovieList result
         }
         with(NotificationManagerCompat.from(this)) {
             if (ActivityCompat.checkSelfPermission(
-                    this@SecondActivity,
+                    this@ListActivity,
                     Manifest.permission.POST_NOTIFICATIONS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
-                    this@SecondActivity,
+                    this@ListActivity,
                     arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                     1
                 )
@@ -82,7 +80,7 @@ class SecondActivity : AppCompatActivity() {
 
         val gson = Gson()
         val movies = gson.fromJson(response.body!!.string(), Movies::class.java)
-        db.movieDao().insertAll(*movies.movies.toTypedArray())
+        db.movieDao().upsertAll(*movies.movies.toTypedArray())
         updateFromDatabase()
         callback(movies)
     }
@@ -106,7 +104,7 @@ class SecondActivity : AppCompatActivity() {
                 findViewById<RecyclerView>(R.id.recyclerView).apply {
                     adapter = MovieAdapter(it)
                     layoutManager =
-                        androidx.recyclerview.widget.LinearLayoutManager(this@SecondActivity)
+                        androidx.recyclerview.widget.LinearLayoutManager(this@ListActivity)
                 }
             }
         }

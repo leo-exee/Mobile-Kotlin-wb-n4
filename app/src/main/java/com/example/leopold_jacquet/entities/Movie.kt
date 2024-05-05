@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.json.JSONObject
 
-@Entity(tableName = "movie")
+@Entity(tableName = "movietest")
 data class Movie (
 
     @PrimaryKey(autoGenerate = true)
@@ -18,5 +18,5 @@ data class Movie (
     var production_year: Int = 0,
 
     @ColumnInfo(name = "poster", defaultValue = "")
-    var poster: String = ""
+    var poster: String? = ""
 )
