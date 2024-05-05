@@ -23,22 +23,24 @@ import okhttp3.Request
 import okhttp3.Response
 
 class ListActivity : AppCompatActivity() {
-    private val CHANNEL_ID = "channel_id"
+    private val channelId = "channel_id"
     private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
-        setContentView(R.layout.activity_second)
+        setContentView(R.layout.activity_list)
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java, "movies.db"
         ).fallbackToDestructiveMigration().build()
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStart() {
         super.onStart()
-        var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        var builder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Movies")
             .setContentText("Here are the movies")
@@ -89,7 +91,7 @@ class ListActivity : AppCompatActivity() {
         val name = "Movies"
         val descriptionText = "Here are the movies"
         val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+        val channel = NotificationChannel(channelId, name, importance).apply {
             description = descriptionText
         }
         val notificationManager: NotificationManager =
@@ -97,8 +99,8 @@ class ListActivity : AppCompatActivity() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun updateFromDatabase() = CoroutineScope(Dispatchers.IO).launch {
-        val flow = db.movieDao().getFlow()
+    private fun updateFromDatabase() = CoroutineScope(Dispatchers.IO).launch {
+        val flow = db.movieDao().getAllFlow()
         flow.collect() {
             CoroutineScope(Dispatchers.Main).launch {
                 findViewById<RecyclerView>(R.id.recyclerView).apply {

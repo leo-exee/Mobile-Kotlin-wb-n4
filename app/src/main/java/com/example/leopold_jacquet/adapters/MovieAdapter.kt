@@ -1,11 +1,14 @@
 package com.example.leopold_jacquet.adapters
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.leopold_jacquet.DetailsActivity
 import com.example.leopold_jacquet.R
 import com.example.leopold_jacquet.entities.Movie
 import com.squareup.picasso.Picasso
@@ -39,5 +42,11 @@ class MovieAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MovieA
         }
 
         Picasso.get().load(movies[position].poster).into(holder.poster)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
+            intent.putExtra("movieId", movies[position].id)
+            startActivity(holder.itemView.context, intent, null)
+        }
     }
 }
