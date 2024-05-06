@@ -5,10 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <androidx.fragment.app.FragmentContainerView
+    <fragment
+        android:id="@+id/nav_graph_details_router"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/nav_host_fragment_content_details"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_marginTop="?attr/actionBarSize"
         app:defaultNavHost="true"

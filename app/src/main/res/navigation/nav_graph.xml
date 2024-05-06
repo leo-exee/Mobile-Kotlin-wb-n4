@@ -10,8 +10,14 @@
         android:name="com.example.leopold_jacquet.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
-
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"/>
+            android:id="@+id/action_FirstFragment_to_FilterFragment"
+            app:destination="@id/FilterFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/FilterFragment"
+        android:name="com.example.leopold_jacquet.FilterFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_filter" />
 </navigation>

@@ -1,17 +1,8 @@
 package com.example.leopold_jacquet
 
-import android.Manifest
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.example.leopold_jacquet.adapters.MovieAdapter
 import com.example.leopold_jacquet.entities.Movies
 import com.google.gson.Gson
@@ -23,44 +14,20 @@ import okhttp3.Request
 import okhttp3.Response
 
 class ListActivity : AppCompatActivity() {
-    private val channelId = "channel_id"
     private lateinit var db: AppDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        createNotificationChannel()
         setContentView(R.layout.activity_list)
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "movies.db"
-        ).fallbackToDestructiveMigration().build()
+        db = AppDatabase.getInstance(this)
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStart() {
         super.onStart()
-        var builder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Movies")
-            .setContentText("Here are the movies")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
         requestMovieList { result ->
             return@requestMovieList result
-        }
-        with(NotificationManagerCompat.from(this)) {
-            if (ActivityCompat.checkSelfPermission(
-                    this@ListActivity,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this@ListActivity,
-                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                    1
-                )
-            }
-            notify(1, builder.build())
         }
     }
 
@@ -85,18 +52,6 @@ class ListActivity : AppCompatActivity() {
         db.movieDao().upsertAll(*movies.movies.toTypedArray())
         updateFromDatabase()
         callback(movies)
-    }
-
-    private fun createNotificationChannel() {
-        val name = "Movies"
-        val descriptionText = "Here are the movies"
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(channelId, name, importance).apply {
-            description = descriptionText
-        }
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
     }
 
     private fun updateFromDatabase() = CoroutineScope(Dispatchers.IO).launch {
