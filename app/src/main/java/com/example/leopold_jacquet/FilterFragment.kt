@@ -3,7 +3,9 @@ package com.example.leopold_jacquet
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -52,12 +54,19 @@ class FilterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val action: PendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            Intent(context, ListActivity::class.java),
+            PendingIntent.FLAG_MUTABLE
+        )
         var builder = NotificationCompat.Builder(requireContext(), channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Movies")
-            .setContentText("Here are the movies")
+            .setContentText("Here are the movies from $value")
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Here are the movies from $value. Click to see all movies."))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .addAction(R.drawable.ic_launcher_foreground, "Refresh", null)
+            .addAction(R.drawable.ic_launcher_foreground, "See all movies", action)
         filterMovies{
             return@filterMovies
         }

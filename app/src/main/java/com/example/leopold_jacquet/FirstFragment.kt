@@ -84,8 +84,6 @@ class FirstFragment : Fragment() {
         .map { it.production_year.toString() }
         .distinct()
         .sorted()
-
-        Log.d("productionYearList", productionYearList.toString())
         CoroutineScope(Dispatchers.Main).launch {
             view?.findViewById<RecyclerView>(R.id.recyclerView)?.apply {
                 adapter = FilterAdapter(productionYearList)

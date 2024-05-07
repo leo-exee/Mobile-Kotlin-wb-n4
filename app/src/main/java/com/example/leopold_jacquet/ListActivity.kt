@@ -31,7 +31,7 @@ class ListActivity : AppCompatActivity() {
         }
     }
 
-    fun requestMovieList(callback: (Movies) -> Movies) = CoroutineScope(Dispatchers.IO).launch {
+    private fun requestMovieList(callback: (Movies) -> Movies) = CoroutineScope(Dispatchers.IO).launch {
         val client = OkHttpClient()
         var request: Request = Request.Builder()
             .url("https://api.betaseries.com/movies/list")

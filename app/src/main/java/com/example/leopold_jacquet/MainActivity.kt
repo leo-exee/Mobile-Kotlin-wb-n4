@@ -1,7 +1,7 @@
 package com.example.leopold_jacquet
 
+import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,7 +36,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_infos -> {
+                startActivity(Intent(this, InfoActivity::class.java))
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
