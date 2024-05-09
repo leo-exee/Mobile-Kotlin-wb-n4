@@ -44,6 +44,7 @@
             android:exported="false"
             android:label="Info"
             android:theme="@style/Theme.LeopoldJACQUETWebtehN4"
+            android:screenOrientation="portrait"
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
