@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -22,7 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-private const val FILTER_PARAM = "filter"
 private const val VALUE_PARAM = "value"
 
 class FilterFragment : Fragment() {
@@ -37,10 +35,9 @@ class FilterFragment : Fragment() {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
         arguments?.let {
-            filter = it.getString(FILTER_PARAM)
             value = it.getString(VALUE_PARAM)
         }
-        (activity as MainActivity).supportActionBar?.title = "$filter: $value"
+        (activity as MainActivity).supportActionBar?.title = "${resources.getString(R.string.production_year)}: $value"
         (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -60,13 +57,15 @@ class FilterFragment : Fragment() {
             Intent(context, ListActivity::class.java),
             PendingIntent.FLAG_MUTABLE
         )
-        var builder = NotificationCompat.Builder(requireContext(), channelId)
+        val builder = NotificationCompat.Builder(requireContext(), channelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("Movies")
-            .setContentText("Here are the movies from $value")
-            .setStyle(NotificationCompat.BigTextStyle().bigText("Here are the movies from $value. Click to see all movies."))
+            .setContentTitle(resources.getString(R.string.movies))
+            .setContentText("${resources.getString(R.string.movies_from_year)} $value")
+            .setStyle(NotificationCompat.BigTextStyle().bigText(
+                "${resources.getString(R.string.movies_from_year)} $value. ${resources.getString(R.string.movies_from_year2)}"
+            ))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .addAction(R.drawable.ic_launcher_foreground, "See all movies", action)
+            .addAction(R.drawable.ic_launcher_foreground, resources.getString(R.string.see_all), action)
         filterMovies{
             return@filterMovies
         }
@@ -101,12 +100,9 @@ class FilterFragment : Fragment() {
     }
 
     private fun createNotificationChannel() {
-        val name = "Movies"
-        val descriptionText = "Here are the movies"
+        val name = resources.getString(R.string.movies)
         val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(channelId, name, importance).apply {
-            description = descriptionText
-        }
+        val channel = NotificationChannel(channelId, name, importance).apply {}
         val notificationManager: NotificationManager =
             getSystemService(requireContext(),
                 NotificationManager::class.java
@@ -116,10 +112,9 @@ class FilterFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(filter: String, value: String) =
+        fun newInstance(value: String) =
             FilterFragment().apply {
                 arguments = Bundle().apply {
-                    putString(FILTER_PARAM, filter)
                     putString(VALUE_PARAM, value)
                 }
             }

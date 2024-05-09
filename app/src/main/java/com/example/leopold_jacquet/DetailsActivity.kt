@@ -11,6 +11,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+private const val MOVIE_ID = "movieId"
+
 class DetailsActivity: AppCompatActivity() {
     private lateinit var db: AppDatabase
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -27,7 +29,7 @@ class DetailsActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val movieId = intent.getIntExtra("movieId", 0)
+        val movieId = intent.getIntExtra(MOVIE_ID, 0)
         requestMovieById(movieId) { movie ->
             displayMovie(movie)
         }
@@ -39,7 +41,15 @@ class DetailsActivity: AppCompatActivity() {
     }
 
     private fun displayMovie(movie: Movie) {
-        val instance = DetailsFragment.newInstance(movie.title, movie.production_year.toString(), movie.poster ?: "")
+        val productionYear = if (movie.production_year == 0) resources.getString(R.string.no_production_year) else movie.production_year.toString()
+        val title = if (movie.title == "") resources.getString(R.string.no_title) else movie.title
+        val instance = DetailsFragment.newInstance(
+            title,
+            productionYear,
+            movie.poster ?: "",
+            movie.imdb_id ?: "",
+            movie.tmdb_id ?: ""
+        )
         supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_content_details, instance).commit()
     }
 

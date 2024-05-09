@@ -3,9 +3,8 @@ package com.example.leopold_jacquet.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.json.JSONObject
 
-@Entity(tableName = "movietest")
+@Entity(tableName = "movie")
 data class Movie (
 
     @PrimaryKey(autoGenerate = true)
@@ -18,5 +17,11 @@ data class Movie (
     var production_year: Int = 0,
 
     @ColumnInfo(name = "poster", defaultValue = "")
-    var poster: String? = ""
+    var poster: String? = "",
+
+    @ColumnInfo(name = "imdb_id", defaultValue = "")
+    var imdb_id: String? = "",
+
+    @ColumnInfo(name = "tmdb_id", defaultValue = "")
+    var tmdb_id: String? = ""
 )

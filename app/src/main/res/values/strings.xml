@@ -1,13 +1,23 @@
 <resources>
-    <string name="app_name">Leopold JACQUET-Webteh N4</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="app_name">Movies List</string>
+    <string name="action_info">Get all the movies</string>
 
-    <string name="lorem_ipsum">
+    <string name="no_title">Title not available for this movie :(</string>
+    <string name="no_production_year">"Production year not available for this movie :("</string>
+
+    <string name="production_year">Production year</string>
+    <string name="poster">Poster</string>
+    <string name="imbd">See on IMDB</string>
+    <string name="tmdb">See on TMDB</string>
+
+    <string name="movies">Movies</string>
+    <string name="see_all">See all movies</string>
+    <string name="movies_from_year">Here are the movies from</string>
+    <string name="movies_from_year2">Click here to see all movies.</string>
+
+    <string name="info">Information</string>
+
+    <string name="info_text">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
         dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad
@@ -43,7 +53,6 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="activity">Activity</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Home page</string>
+    <string name="filter">Filter page</string>
 </resources>

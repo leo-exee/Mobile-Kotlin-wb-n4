@@ -26,32 +26,7 @@ class ListActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        requestMovieList { result ->
-            return@requestMovieList result
-        }
-    }
-
-    private fun requestMovieList(callback: (Movies) -> Movies) = CoroutineScope(Dispatchers.IO).launch {
-        val client = OkHttpClient()
-        var request: Request = Request.Builder()
-            .url("https://api.betaseries.com/movies/list")
-            .get()
-            .addHeader("X-BetaSeries-Key", "62cf9d2eef3d")
-            .build()
-
-        val response: Response = client.newCall(request).execute()
-        if (!response.isSuccessful) {
-            throw Exception("Failed to get movies")
-        }
-        if (response.body == null) {
-            throw Exception("Failed to get movies")
-        }
-
-        val gson = Gson()
-        val movies = gson.fromJson(response.body!!.string(), Movies::class.java)
-        db.movieDao().upsertAll(*movies.movies.toTypedArray())
         updateFromDatabase()
-        callback(movies)
     }
 
     private fun updateFromDatabase() = CoroutineScope(Dispatchers.IO).launch {

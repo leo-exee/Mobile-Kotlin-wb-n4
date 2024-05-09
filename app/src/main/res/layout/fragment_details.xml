@@ -14,28 +14,55 @@
         app:layout_constraintStart_toStartOf="parent"
         android:id="@+id/poster"
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/ic_launcher_background"
+        android:layout_height="250dp"
+        android:contentDescription="@string/poster" />
 
     <TextView
         app:layout_constraintTop_toBottomOf="@id/poster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/movies"
         android:id="@+id/title"
         android:layout_marginTop="25dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:textSize="30sp"
         />
 
     <TextView
         app:layout_constraintTop_toBottomOf="@id/title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/production_year"
         android:id="@+id/production_year"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/imbd"
+        app:layout_constraintTop_toBottomOf="@id/production_year"
+        app:layout_constraintEnd_toStartOf="@+id/tmdb"
+        app:layout_constraintStart_toStartOf="parent"
+        android:id="@+id/imdb"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tmdb"
+        app:layout_constraintTop_toBottomOf="@id/production_year"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imdb"
+        android:id="@+id/tmdb"
+        android:layout_marginTop="10dp"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

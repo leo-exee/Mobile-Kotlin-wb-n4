@@ -9,7 +9,7 @@ import com.example.leopold_jacquet.daos.MovieDAO
 import com.example.leopold_jacquet.entities.Movie
 import com.example.leopold_jacquet.entities.Movies
 
-@Database(entities = [Movie::class], version = 3)
+@Database(entities = [Movie::class], version = 7)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun movieDao(): MovieDAO
 

@@ -9,21 +9,18 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDAO {
-    @Query("SELECT * FROM movietest")
+    @Query("SELECT * FROM movie")
     fun getAll(): List<Movie>
 
-    @Query("SELECT * FROM movietest")
+    @Query("SELECT * FROM movie")
     fun getAllFlow(): Flow<List<Movie>>
 
-    @Query("SELECT * FROM movietest WHERE production_year = :value")
+    @Query("SELECT * FROM movie WHERE production_year = :value")
     fun flowDateMovies(value: Int): Flow<List<Movie>>
 
-    @Query("SELECT * FROM movietest WHERE id = :id")
+    @Query("SELECT * FROM movie WHERE id = :id")
     fun findById(id: Int): Movie
 
     @Upsert
     fun upsertAll(vararg movies: Movie)
-
-    @Delete
-    fun delete(movie: Movie)
 }

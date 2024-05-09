@@ -1,6 +1,5 @@
 package com.example.leopold_jacquet.adapters
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.example.leopold_jacquet.R
 import com.example.leopold_jacquet.entities.Movie
 import com.squareup.picasso.Picasso
 
+private const val MOVIE_ID = "movieId"
 class MovieAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.title)
@@ -30,22 +30,22 @@ class MovieAdapter(private val movies: List<Movie>): RecyclerView.Adapter<MovieA
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (movies[position].title.isEmpty()) {
-            holder.title.text = "Title not available for this movie :("
+        if (movies[position].title == "") {
+            holder.title.setText(R.string.no_title)
         } else {
             holder.title.text = movies[position].title
         }
         if (movies[position].production_year == 0) {
-            holder.production_year.text = "Production year not available for this movie :("
+            holder.production_year.setText(R.string.no_production_year)
         } else {
-            holder.production_year.text = "Production year: " + movies[position].production_year.toString()
+            holder.production_year.text = "${movies[position].production_year}"
         }
 
         Picasso.get().load(movies[position].poster).into(holder.poster)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailsActivity::class.java)
-            intent.putExtra("movieId", movies[position].id)
+            intent.putExtra(MOVIE_ID, movies[position].id)
             startActivity(holder.itemView.context, intent, null)
         }
     }

@@ -16,10 +16,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/tvTitle"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Information"
+        android:text="@string/info"
         android:textSize="30sp"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
@@ -28,21 +28,9 @@
         />
 
     <TextView
-        android:id="@+id/tvInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="This is the information page"
-        android:textSize="20sp"
-        android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:layout_constraintStart_toEndOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="This is the information page"
-        app:layout_constraintTop_toBottomOf="@id/tvInfo"
+        android:text="@string/info_text"
+        app:layout_constraintTop_toBottomOf="@id/title"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

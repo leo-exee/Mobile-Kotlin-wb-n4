@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.leopold_jacquet.FirstFragment"
-        android:label="@string/first_fragment_label"
+        android:label="@string/home"
         tools:layout="@layout/fragment_first">
         <action
             android:id="@+id/action_FirstFragment_to_FilterFragment"
@@ -18,6 +18,6 @@
     <fragment
         android:id="@+id/FilterFragment"
         android:name="com.example.leopold_jacquet.FilterFragment"
-        android:label="@string/second_fragment_label"
+        android:label="@string/filter"
         tools:layout="@layout/fragment_filter" />
 </navigation>
